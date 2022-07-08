@@ -1,6 +1,6 @@
 # ed_group_AP02
 - Estruturas de Dados - AP02 - Atividade Prática Avaliativa 02
-##Integrantes
+## Integrantes
 - Felipe Brun Vergani
 # Implementação de um Grafo, uma Fila em Orientação a Objetos usando Herança e um Método de Ordenação
 
