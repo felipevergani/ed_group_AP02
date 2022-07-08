@@ -7,7 +7,7 @@ Estruturas de Dados - AP02 - Atividade Prática Avaliativa 02
 - Grafos
 - Programação Orientada a Objetos
 - Métodos de Ordenação
-- 
+
 # Objetivos
 - Implementar os principais conceitos de Grafos, Programação Orientada a Objetos e Métodos de Ordenação
 
@@ -23,7 +23,7 @@ Estruturas de Dados - AP02 - Atividade Prática Avaliativa 02
 - Prazo: [2022-08-03 qua]
 - A atividade deve ser realizada em grupo de 2 ou 3 componentes.
 - A formação dos grupos e o repositório GIT do grupo devem ser comunicadas até 11:30h do dia 08/06.
-- Implementações:
+# Implementações:
 1) Faça um programa em C que implemente o TAD Grafo através de Listas de Adjacências usando ponteiros.
 2) Faça um programa em C++ ou Java que implemente o TAD Fila usando herança de um Lista Encadeada Simples.
 3) Faça um programa em C que implemente o método de ordenação indicado (no dia 08/06) para grupo.
