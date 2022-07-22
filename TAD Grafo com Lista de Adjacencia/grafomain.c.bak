@@ -1,28 +1,31 @@
+
 // TAD Grafo usando Lista de Adjacência.
 // Grupo 8.
+// compilar e linkar -> gcc -std=c99 grafomain.c grafofunc.c -o teste.exe
+
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "grafos.h"
+#define true 1
+#define false 0
+#include "struct.h"
+typedef int bool;
+typedef int TIPOPESO;
 
-int main(){
+
+
+int main()
+{
 	
-	//Criar o grafo
+	GRAFO * gr = criaGrafo(5);
+	criaAresta(gr, 0, 1, 2);
+	criaAresta(gr, 1, 2, 4);
+	criaAresta(gr, 2, 0, 12);
+	criaAresta(gr, 2, 4, 40);
+	criaAresta(gr, 3, 1, 3);
+	criaAresta(gr, 4, 3, 8);
+	profundida(g);
 	
-	Grafo *cria_Grafo(int n_vertices, int grau_max, int ponderado);
-	void libera_Grafo(Grafo* gr);
-	int insereAresta(Grafo* gr, int origem, int destin, int digrafo, float peso);
-	int removeAresta(Grafo* gr, int origem, int destin, int digrafo);
-	
-	
-	Grafo *gr;
-	gr = cria_Grafo(10, 7, 0);
-	insereAresta(gr, 0, 1, 0, 0);
-	insereAresta(gr, 1, 3, 0, 0);
-	removeAresta(gr, 0, 1, 0);
-	
-	libera_Grafo(gr);
-	
-	
-	return 0;
-};
+    
+    imprime(gr);
+}

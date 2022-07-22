@@ -1,99 +1,96 @@
+
 // TAD Grafo usando Lista de Adjacência.
 // Grupo 8.
+// compilar e linkar -> gcc -std=c99 grafomain.c grafofunc.c -o teste.exe
+
 
 #include <stdio.h>
-#include "grafos.h"
-#include "grafomain.c"
+#include <stdlib.h>
+#define true 1
+#define false 0
+#include "struct.h"
+typedef int bool;
+typedef int TIPOPESO;
 
-	//Criar o grafo
-	Grafo *cria_Grafo(int n_vertices, int grau_max, int ponderado){
-		Grafo *gr=(Grafo*) malloc(sizeof(struct Grafo));
-		if(gr != NULL){
-			int i;
-			gr->n_vertices = n_vertices;
-			gr->grau_max = grau_max;
-			gr->ponderado = (ponderado != 0)?1:0;
-			gr->grau=(int*)calloc(n_vertices, sizeof(int));
-			gr->arestas=(int**)malloc(n_vertices*sizeof(int*));
-			
-			for(i=0; i < n_vertices; i++){
-				gr->arestas[i]=(int*)malloc(grau_max*sizeof(int));
-			}
-			if(gr->ponderado){
-				gr->pesos=(float**)malloc(n_vertices*sizeof(float*));
-				
-				for(i=0; i < n_vertices; i++)
-					gr->pesos[i] = (float*)malloc(grau_max*sizeof(float));
-			}
-		}
-		return gr;
-	}
+#define BRANCO 0
+#define PRETO 1
+#define VERMELHO 2
+
+
+GRAFO *criaGrafo (int v) {
+	int i;
 	
-	//Liberar grafo
+	GRAFO *g = (GRAFO *)malloc(sizeof(GRAFO)); //aloca espaço para estrtura grafo
+	g->vertices = v; //atualizo o numero de vertice
+	g->arestas = 0;  //atualizo o numero de vertice
+	g->adj = (VERTICE *)malloc(v*sizeof(VERTICE)); //ler abaixo
+	//Dentro da estrturua tem só o arranjo para o ponteiro de vertice, não o arranjo em si 	
+	// então aloco o arranjo com (v) o numero de vertice desejado
+	for (i=0; i<v; i++){ 
+		g->adj[i].cab=NULL; //coloco NULL em todas arestas
+	}
+	return(g);
+}
+
+ADJACENCIA *criaAdj(int v, int peso){ 
+	ADJACENCIA *temp = (ADJACENCIA *) malloc (sizeof(ADJACENCIA)); //aloca espaço para um nó
+	temp->vertice =v; //vertice alvo da adjacencia
+	temp->peso = peso; //peso da aresta
+	temp->prox = NULL; 
+	return(temp); //retorno endereço da adjacencia
+}
+
+bool criaAresta(GRAFO *gr, int vi, int vf, TIPOPESO p) { //vai de vi a vf
+	if(!gr) return (false);  //validações se o grafo existe 
+	if((vf<0)||(vf >= gr->vertices))return(false); //validações se os valores não são neg
+	if((vi<0)||(vf >= gr->vertices))return(false); //ou maiores que o numero de vértice do grafo
 	
-	void libera_Grafo(Grafo* gr){
-		if(gr != NULL){
-			int i;
-			for(i = 0; i < gr->n_vertices; i++){
-				free(gr->arestas[i]);
+	ADJACENCIA *novo = criaAdj(vf,p); //crio adjacencia com o vértice final e o peso
+	//coloco a adjacencia na lista do vértice inicial
+	novo->prox = gr->adj[vi].cab; //o campo prox da adjacencia vai receber a cabeça da lista
+	gr->adj[vi].cab=novo; // e a cabeça da lista passa a ser o novo elemento
+	gr->arestas++; // atualizo o numero de aresta no grafo
+	return (true);
+}
+
+void imprime(GRAFO *gr){
+	//validações se o grafo existe 
+	
+	printf("Vertices: %d. Arestas: %d. \n",gr->vertices,gr->arestas); //imprime numero de vértice e arestas
+	int i;
+	
+	for(i=0; i<gr->vertices; i++){
+		printf("v%d: ",i); //Imprimo em qual aresta estou
+		ADJACENCIA *ad = gr->adj[i].cab; //chamo a cabeça da lista de adjacencia desta aresta
+			while(ad){ //enquanto as adjacencias não forem nula
+				printf("v%d(%d) ",ad->vertice,ad->peso); //imprimo a adjacencia e seu peso
+				ad=ad->prox; //passo para proxima adjacencia
 			}
-			free(gr->arestas);
-			
-			if(gr->ponderado){
-				for(i=0; i<gr->n_vertices; i++){
-					free(gr->pesos[i]);
-				}
-				free(gr->pesos);
-			}
-			free(gr->grau);
-			free(gr);
-		}
+		printf("\n");	
 	}
+}
+
+void profundida (GRAFO *gr){
+	int cor[gr->vertices];//crio um vetor com arranjo de cores (o valor tem que bater com o do grafo)
 	
-	int insereAresta(Grafo* gr, int origem, int destin, int digrafo, float peso){
-	//Verificação se existe
-		if(gr == NULL) return 0;
-		
-		if(origem < 0 || origem >= gr->n_vertices) return 0;
-		
-		if(destin < 0 || destin >= gr->n_vertices) return 0;
-		
-		gr->arestas[origem][gr->grau[origem]] = destin;
-		if(gr->ponderado){
-			gr->pesos[origem][gr->grau[origem]] = peso;
-			gr->grau[origem]++;
-		}
-		
-		if(digrafo == 0){
-			insereAresta(gr, destin, origem, 1, peso);
-		}
-		
-		return 1;
+	int u;
+	for(u=0;u<gr->vertices;u++){ //inicialmente todos vérties são brancos
+		cor[u] = BRANCO;
 	}
-	
-	int removeAresta(Grafo* gr, int origem, int destin, int digrafo){
-	//Verificação se existe
-		if(gr == NULL) return 0;
-		
-		if(origem < 0 || origem >= gr->n_vertices) return 0;
-		
-		if(destin < 0 || destin >= gr->n_vertices) return 0;
-		
-		int i=0;
-		while(i<gr->grau[origem] && gr->arestas[origem][i]!=destin){
-			i++;
-			if(i == gr->grau[origem]) return 0;	//Elemento não encontrado
-		}
-		gr->grau[origem]--;
-		gr->arestas[origem][i]=gr->arestas[origem][gr->grau[origem]];
-			
-		if(gr->ponderado){
-			gr->pesos[origem][i]=gr->pesos[origem][gr->grau[origem]];
-		}
-			
-		if(digrafo == 1){
-			removeAresta(gr, destin, origem, 1);
-		}
-		
-		return 1;
+	for(u=0;u<gr->vertices;u++){
+		if (cor[u] == BRANCO) // se for branco visita todos em profundida
+		visitaP(gr,u,cor); // repare que é recursivo, visita até o final depois volta 	
+	}	
+}
+
+void visitaP(GRAFO *gr, int u, int *cor){
+	cor[u] = PRETO; //visitar um nó marca como preto
+	ADJACENCIA *v = gr->adj[u].cab; //visito adjacencia
+	while (v){ //então visitamos sua adjacencia, aresta u e v recursivamente
+		if(cor[v->vertice]==BRANCO) //se a cor for branco eu visito
+		visitaP(gr,v->vertice,cor); //veja que visito chamando a função de novo, ou seja recursivo
+		v = v->prox;
+		printf("Vizinho: %d\n", ADJACENCIA v);
 	}
+	cor[u] = VERMELHO;
+}
