@@ -1,6 +1,6 @@
 
 // TAD Grafo usando Lista de Adjacência.
-// Grupo 8.
+// Felipe Brun Vergani
 // compilar e linkar -> gcc -std=c99 grafomain.c grafofunc.c -o teste.exe
 
 #include <stdio.h>
@@ -22,7 +22,7 @@ typedef struct vertice {
     ADJACENCIA *cab; //possui apenas a cabeça da lista de adjacencia
 }VERTICE;
 
-typedef struct grafo { //lembrando que cada grafo possui:
+typedef struct grafo { 
     int vertices; // numero de vertice total do grafo
     int arestas; // numero de arestas totais do grafo
     VERTICE *adj; // Arranjo de vertices da estrutura

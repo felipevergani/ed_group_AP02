@@ -1,6 +1,6 @@
 
 // TAD Grafo usando Lista de Adjacência.
-// Grupo 8.
+// Felipe Brun Vergani
 // compilar e linkar -> gcc -std=c99 grafomain.c grafofunc.c -o teste.exe
 
 
@@ -34,7 +34,7 @@ GRAFO *criaGrafo (int v) {
 
 ADJACENCIA *criaAdj(int v, int peso){ 
 	ADJACENCIA *temp = (ADJACENCIA *) malloc (sizeof(ADJACENCIA)); //aloca espaço para um nó
-	temp->vertice =v; //vertice alvo da adjacencia
+	temp->vertice = v; //vertice alvo da adjacencia
 	temp->peso = peso; //peso da aresta
 	temp->prox = NULL; 
 	return(temp); //retorno endereço da adjacencia
@@ -53,13 +53,18 @@ bool criaAresta(GRAFO *gr, int vi, int vf, TIPOPESO p) { //vai de vi a vf
 	return (true);
 }
 
+
+
+
+
+
 void imprime(GRAFO *gr){
-	//validações se o grafo existe 
 	
 	printf("Vertices: %d. Arestas: %d. \n",gr->vertices,gr->arestas); //imprime numero de vértice e arestas
 	int i;
 	
 	for(i=0; i<gr->vertices; i++){
+		
 		printf("v%d: ",i); //Imprimo em qual aresta estou
 		ADJACENCIA *ad = gr->adj[i].cab; //chamo a cabeça da lista de adjacencia desta aresta
 			while(ad){ //enquanto as adjacencias não forem nula
@@ -93,3 +98,5 @@ void visitaP(GRAFO *gr, int u, int *cor){
 	}
 	cor[u] = VERMELHO;
 }
+
+

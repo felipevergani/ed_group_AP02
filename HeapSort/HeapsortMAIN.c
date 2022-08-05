@@ -3,13 +3,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-
+//Felipe Brun Vergani
 //gcc -std=c99 Heapsort.c HeapsortMAIN.c -o heap.x
 
 void heapsort(int a[], int n);
 
 int main(){
 	
+	FILE *opn;
+	opn = fopen("resultados.txt", "a+");
 	int sizex;
 	int aux;
 	
@@ -21,25 +23,26 @@ int main(){
 	srand((unsigned)time(0));
 	
 	
-	printf("Valores aleatórios não ordenados: \n");
+	fprintf(opn,"Valores aleatórios não ordenados: \n");
 	for(int i = 0; i < sizex; i++){
 		
 		ptr[i] = (rand() % 1000);
-		printf(" %d\t ", ptr[i]);
+		fprintf(opn," %d", ptr[i]);
 	}	
-	printf("\n");
+	fprintf(opn,"\n");
 	
 	
 	
 
 	heapsort(ptr, sizex);
 	
-	printf("Valores aleatórios ordenados por heapsort: \n");
+	fprintf(opn,"Valores aleatórios ordenados por heapsort: \n");
 	for(int i = 0; i < sizex; i++){	
-		printf(" %d\t ", ptr[i]);
+		fprintf(opn," %d", ptr[i]);
 	}
+	fprintf(opn,"\n");
 	
-	
+	fclose(opn);
 	
 	return 0;
 }
